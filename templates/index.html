@@ -1,32 +1,151 @@
-<html>
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emotion Detection</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
     <script src="./static/mywebscript.js"></script>
     <style>
-        .center-heading {
-            text-align: center;
-        }
+      .center-heading {
+        text-align: center;
+      }
+      .card {
+        width: 90%;
+        max-width: 700px;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+          0 0 40px rgba(0, 255, 255, 0.3);
+      }
+      #system_response {
+        white-space: pre-wrap;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+      body {
+        font-family: cursive;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #020405, #020304, #141414);
+        color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      h1 {
+        font-size: 2rem;
+        color: #00ffff;
+        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        margin-bottom: 20px;
+      }
+      textarea {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 2px solid #00ffff;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 1rem;
+        resize: none;
+        outline: none;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+      textarea::placeholder {
+        color: #cccccc;
+      }
+      button {
+        padding: 15px 30px;
+        background: linear-gradient(90deg, #00ffff, #0077ff);
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+      }
+      button:hover {
+        background: linear-gradient(90deg, #0077ff, #00ffff);
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.8),
+          0 0 50px rgba(0, 255, 255, 0.5);
+      }
+      .result {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        font-size: 1rem;
+        text-align: left;
+        line-height: 1.5;
+        background: rgba(0, 255, 0, 0.1);
+        border: 2px solid #00ff00;
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      }
+      .error {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        font-size: 1rem;
+        text-align: left;
+        line-height: 1.5;
+        background: rgba(255, 0, 0, 0.1);
+        border: 2px solid #ff0000;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      li strong {
+        color: #00ffff;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="card">
-        <div class="card-body">
-            <h1 class="center-heading">NLP - Emotion Detection</h1> 
-            <div style="padding: 25px 25px 25px 25px;">
-            <h2 class="mb-3">
-                <label class="form-label">Please enter the text to be analyzed</label>
-                <input type="textarea" class="form-control" id="textToAnalyze">
-            </h2>
-
-            <div style="padding: 25px 25px 25px 25px;">
-                <button onclick="RunSentimentAnalysis()" class="btn btn-secondary">Run Sentiment Analysis</button>
-            </div>
-            <div style="padding: 25px 25px 25px 25px;"></div>
-            <h2 class="mb-3">
-                <label class="form-label">Result of Emotion Detection</label>
-            </h2>
-
-            <div id="system_response" style="padding: 25px 25px 25px 25px;"></div>
+      <div class="card-body">
+        <h1 class="center-heading">NLP - Emotion Detection</h1>
+        <div style="padding: 25px">
+          <h2 class="mb-3">
+            <label for="textToAnalyze" class="form-label"
+              >Please enter the text to be analyzed:</label
+            >
+            <textarea
+              class="form-control"
+              id="textToAnalyze"
+              rows="4"
+              placeholder="Type your text here..."
+            ></textarea>
+          </h2>
+          <div class="text-center" style="padding: 25px">
+            <button onclick="RunSentimentAnalysis()" class="btn btn-primary">
+              Run Sentiment Analysis
+            </button>
+          </div>
+          <h2 class="mb-3">
+            <label for="system_response" class="form-label"
+              >Result of Emotion Detection:</label
+            >
+          </h2>
+          <div id="system_response" class="result"></div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
+</html>
